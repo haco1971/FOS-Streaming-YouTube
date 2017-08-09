@@ -1,261 +1,259 @@
 #!/bin/bash
-echo "##############################"
-echo "#  DelugeWEB UI Installer    #"
-echo "#         by LiVeSa          #"
-echo "#    www.livesatshare.com    #"
-echo "##############################"
 
-echo "Welcome to the Livesat Deluge WEB UI Automatic installer! Take a cup of coffee and sit back until the process finishes..."
-echo "[·] Im installing what i need..."
-latest="http://download.deluge-torrent.org/source/deluge-1.3.11.tar.gz"
-geoip="http://geolite.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz"
-packages="python python-twisted python-twisted-web python-openssl python-simplejson python-setuptools intltool python-xdg python-chardet geoip-database python-libtorrent python-notify python-pygame python-glade2 librsvg2-common xdg-utils python-mako"
-ip=$(hostname -I | awk -F ' ' '{print $2}')
-# Check if we're root
-if [ $(whoami) != "root" ]; then
-        echo "You need to run this script as root."
-        echo "Use 'sudo ./install.sh' then enter your password when prompted."
-        exit 1
+# FUNCTION: Ubuntu 14.04 Check
+distro(){
+if [ -f /etc/lsb-release ]; then
+    . /etc/lsb-release
+        if [ $DISTRIB_ID == Ubuntu ]; then
+            if [ $DISTRIB_RELEASE != "14.04" ]; then
+                error
+            fi
+        else
+            error
+        fi
 fi
-clear
-## get packages required to build deluge ##
-echo "Installing Dependencies....."
-	apt-get update -qq
-	apt-get upgrade -qqy
-	apt-get install -qqy $packages
-
-## setup install dir ##
-	mkdir deluge_install
-	cd deluge_install
-## get deluge
-	wget $latest
-	tar -xf deluge-*
-	cd deluge-*
-
-## install deluge ##
-	echo " Installing Deluge...."
-	python setup.py clean -a
-	python setup.py build
-	python setup.py install  --install-layout=deb
-
-## cleanup install directory ##
-	cd ../..
-	rm -rf deluge_install
-	clear
-## install geoip database to resolve ips ##
-	echo " Installing GeoIP Database...."
-	wget $geoip
-	gzip -d GeoIP.dat.gz
-	mkdir -p /usr/share/geoip
-	mv GeoIP.dat /usr/share/geoip/
-
-## setup deluge user
-	echo "Now we will setup a user for Deluge"
-	read -p "What would you like the username to be?   " USERNAME
-             adduser --gecos "" $USERNAME
-
-####################### BEGIN INIT SETUP ###############################				
-## setup defaults ##
-
-cat > /etc/default/deluge-daemon << EOF
-# Configuration for /etc/init.d/deluge-daemon
-
-# The init.d script will only run if this variable non-empty.
-DELUGED_USER="$USERNAME"             # !!!CHANGE THIS!!!!
-
-# Should we run at startup?
-RUN_AT_STARTUP="YES"
-EOF
-
-## setup init script ##
-## original script from http://apocryph.org/archives/601 ##
-cat > /etc/init.d/deluge-daemon << "EOF"
-#!/bin/sh
-### BEGIN INIT INFO
-# Provides:          deluge-daemon
-# Required-Start:    $local_fs $remote_fs
-# Required-Stop:     $local_fs $remote_fs
-# Should-Start:      $network
-# Should-Stop:       $network
-# Default-Start:     2 3 4 5
-# Default-Stop:      0 1 6
-# Short-Description: Daemonized version of deluge and webui.
-# Description:       Starts the deluge daemon with the user specified in
-#                    /etc/default/deluge-daemon.
-### END INIT INFO
-
-# Author: Adolfo R. Brandes
-# Updated by: Jean-Philippe "Orax" Roemer
-
-PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
-DESC="Deluge Daemon"
-NAME1="deluged"
-NAME2="deluge"
-DAEMON1=/usr/bin/deluged
-DAEMON1_ARGS="-d"             # Consult `man deluged` for more options
-DAEMON2=/usr/bin/deluge-web
-DAEMON2_ARGS=""               # Consult `man deluge-web` for more options
-PIDFILE1=/var/run/$NAME1.pid
-PIDFILE2=/var/run/$NAME2.pid
-UMASK=022                     # Change this to 0 if running deluged as its own user
-PKGNAME=deluge-daemon
-SCRIPTNAME=/etc/init.d/$PKGNAME
-
-# Exit if the package is not installed
-[ -x "$DAEMON1" -a -x "$DAEMON2" ] || exit 0
-
-# Read configuration variable file if it is present
-[ -r /etc/default/$PKGNAME ] && . /etc/default/$PKGNAME
-
-# Load the VERBOSE setting and other rcS variables
-[ -f /etc/default/rcS ] && . /etc/default/rcS
-
-# Define LSB log_* functions.
-# Depend on lsb-base (>= 3.0-6) to ensure that this file is present.
-. /lib/lsb/init-functions
-
-if [ -z "$RUN_AT_STARTUP" -o "$RUN_AT_STARTUP" != "YES" ]
-then
-   log_warning_msg "Not starting $PKGNAME, edit /etc/default/$PKGNAME to start it."
-   exit 0
-fi
-
-if [ -z "$DELUGED_USER" ]
-then
-    log_warning_msg "Not starting $PKGNAME, DELUGED_USER not set in /etc/default/$PKGNAME."
-    exit 0
-fi
-
-#
-# Function to verify if a pid is alive
-#
-is_alive()
-{
-   pid=`cat $1` > /dev/null 2>&1
-   kill -0 $pid > /dev/null 2>&1
-   return $?
 }
 
-#
-# Function that starts the daemon/service
-#
-do_start()
-{
-   # Return
-   #   0 if daemon has been started
-   #   1 if daemon was already running
-   #   2 if daemon could not be started
-
-   is_alive $PIDFILE1
-   RETVAL1="$?"
-
-   if [ $RETVAL1 != 0 ]; then
-       rm -f $PIDFILE1
-       start-stop-daemon --start --background --quiet --pidfile $PIDFILE1 --make-pidfile \
-       --exec $DAEMON1 --chuid $DELUGED_USER --user $DELUGED_USER --umask $UMASK -- $DAEMON1_ARGS
-       RETVAL1="$?"
-   else
-       is_alive $PIDFILE2
-       RETVAL2="$?"
-       [ "$RETVAL2" = "0" -a "$RETVAL1" = "0" ] && return 1
-   fi
-
-   is_alive $PIDFILE2
-   RETVAL2="$?"
-
-   if [ $RETVAL2 != 0 ]; then
-        sleep 2
-        rm -f $PIDFILE2
-        start-stop-daemon --start --background --quiet --pidfile $PIDFILE2 --make-pidfile \
-        --exec $DAEMON2 --chuid $DELUGED_USER --user $DELUGED_USER --umask $UMASK -- $DAEMON2_ARGS
-        RETVAL2="$?"
-   fi
-   [ "$RETVAL1" = "0" -a "$RETVAL2" = "0" ] || return 2
+# FUNCTION: ERROR
+error(){
+    sleep 2
+    echo -ne '\n'"--PROBLEM!--"
+    echo -ne '\n'"Support: https://github.com/zgelici/FOS-Streaming-v1" '\n'
+exit
 }
 
-#
-# Function that stops the daemon/service
-#
-do_stop()
-{
-   # Return
-   #   0 if daemon has been stopped
-   #   1 if daemon was already stopped
-   #   2 if daemon could not be stopped
-   #   other if a failure occurred
 
-   start-stop-daemon --stop --quiet --retry=TERM/30/KILL/5 --user $DELUGED_USER --pidfile $PIDFILE2
-   RETVAL2="$?"
-   start-stop-daemon --stop --quiet --retry=TERM/30/KILL/5 --user $DELUGED_USER --pidfile $PIDFILE1
-   RETVAL1="$?"
-   [ "$RETVAL1" = "2" -o "$RETVAL2" = "2" ] && return 2
-
-   rm -f $PIDFILE1 $PIDFILE2
-
-   [ "$RETVAL1" = "0" -a "$RETVAL2" = "0" ] && return 0 || return 1
+# FUNCTION: FOS-Streaming Exist
+fosstreamingexist() {
+    if [ -d "/home/fos-streaming" ]; then
+      echo -ne '\n'"You have already installed fos streaming before?"
+      echo "If you want remove fos-streaming"
+      echo "killall -9 nginx php-fpm"
+      echo  "userdel fosstreaming"
+      echo "rm -r /home/fos-streaming"
+      exit
+    fi
 }
 
-case "$1" in
-  start)
-   [ "$VERBOSE" != no ] && log_daemon_msg "Starting $DESC" "$NAME1"
-   do_start
-   case "$?" in
-      0|1) [ "$VERBOSE" != no ] && log_end_msg 0 ;;
-      2) [ "$VERBOSE" != no ] && log_end_msg 1 ;;
-   esac
-   ;;
-  stop)
-   [ "$VERBOSE" != no ] && log_daemon_msg "Stopping $DESC" "$NAME1"
-   do_stop
-   case "$?" in
-      0|1) [ "$VERBOSE" != no ] && log_end_msg 0 ;;
-      2) [ "$VERBOSE" != no ] && log_end_msg 1 ;;
-   esac
-   ;;
-  restart|force-reload)
-   log_daemon_msg "Restarting $DESC" "$NAME1"
-   do_stop
-   case "$?" in
-     0|1)
-      do_start
-      case "$?" in
-         0) log_end_msg 0 ;;
-         1) log_end_msg 1 ;; # Old process is still running
-         *) log_end_msg 1 ;; # Failed to start
-      esac
-      ;;
-     *)
-        # Failed to stop
-      log_end_msg 1
-      ;;
-   esac
-   ;;
-  *)
-   echo "Usage: $SCRIPTNAME {start|stop|restart|force-reload}" >&2
-   exit 3
-   ;;
-esac
+# FUNCTION: Packages Install
+packages_install(){
+    apt-get update >/dev/null 2>&1
+    apt-get install -y --force-yes git >/dev/null 2>&1
+    apt-get install -y --force-yes install php5-cli curl >/dev/null 2>&1
+    apt-get install -y --force-yes libxml2-dev  > /dev/null 2>&1
+    apt-get install -y --force-yes libbz2-dev  > /dev/null 2>&1
+    apt-get install -y --force-yes curl   > /dev/null 2>&1
+    apt-get install -y --force-yes libcurl4-openssl-dev   > /dev/null 2>&1
+    apt-get install -y --force-yes libmcrypt-dev  > /dev/null 2>&1
+    apt-get install -y --force-yes libmhash2 > /dev/null 2>&1
+    apt-get install -y --force-yes libmhash-dev  > /dev/null 2>&1
+    apt-get install -y --force-yes libpcre3  > /dev/null 2>&1
+    apt-get install -y --force-yes libpcre3-dev  > /dev/null 2>&1
+    apt-get install -y --force-yes make  > /dev/null 2>&1
+    apt-get install -y --force-yes build-essential  > /dev/null 2>&1
+    apt-get install -y --force-yes libxslt1-dev git > /dev/null 2>&1
+    apt-get install -y --force-yes libssl-dev > /dev/null 2>&1
+    apt-get install -y --force-yes git > /dev/null 2>&1
+    apt-get install -y --force-yes php5  > /dev/null 2>&1
+    apt-get install -y --force-yes unzip > /dev/null 2>&1
+    apt-get install -y --force-yes python-software-properties > /dev/null 2>&1
+    apt-get install -y --force-yes libpopt0 > /dev/null 2>&1
+    apt-get install -y --force-yes libpq-dev > /dev/null 2>&1
+    apt-get install -y --force-yes libpq5 > /dev/null 2>&1
+    apt-get install -y --force-yes libpspell-dev > /dev/null 2>&1
+    apt-get install -y --force-yes libpthread-stubs0-dev > /dev/null 2>&1
+    apt-get install -y --force-yes libpython-stdlib > /dev/null 2>&1
+    apt-get install -y --force-yes libqdbm-dev > /dev/null 2>&1
+    apt-get install -y --force-yes libqdbm14 > /dev/null 2>&1
+    apt-get install -y --force-yes libquadmath0 > /dev/null 2>&1
+    apt-get install -y --force-yes librecode-dev > /dev/null 2>&1
+    apt-get install -y --force-yes librecode0 > /dev/null 2>&1
+    apt-get install -y --force-yes librtmp-dev > /dev/null 2>&1
+    apt-get install -y --force-yes librtmp0 > /dev/null 2>&1
+    apt-get install -y --force-yes libsasl2-dev > /dev/null 2>&1
+    apt-get install -y --force-yes libsasl2-modules > /dev/null 2>&1
+    apt-get install -y --force-yes libsctp-dev > /dev/null 2>&1
+    apt-get install -y --force-yes libsctp1 > /dev/null 2>&1
+    apt-get install -y --force-yes libsensors4 > /dev/null 2>&1
+    apt-get install -y --force-yes libsensors4-dev > /dev/null 2>&1
+    apt-get install -y --force-yes libsm-dev > /dev/null 2>&1
+    apt-get install -y --force-yes libsm6 > /dev/null 2>&1
+    apt-get install -y --force-yes libsnmp-base > /dev/null 2>&1
+    apt-get install -y --force-yes libsnmp-dev > /dev/null 2>&1
+    apt-get install -y --force-yes libsnmp-perl > /dev/null 2>&1
+    apt-get install -y --force-yes libsnmp30 > /dev/null 2>&1
+    apt-get install -y --force-yes libsqlite3-dev > /dev/null 2>&1
+    apt-get install -y --force-yes libssh2-1 > /dev/null 2>&1
+    apt-get install -y --force-yes libssh2-1-dev > /dev/null 2>&1
+    apt-get install -y --force-yes libssl-dev > /dev/null 2>&1
+    apt-get install -y --force-yes libstdc++-4.8-dev > /dev/null 2>&1
+    apt-get install -y --force-yes libstdc++6-4.7-dev > /dev/null 2>&1
+    apt-get install -y --force-yes libsybdb5 > /dev/null 2>&1
+    apt-get install -y --force-yes libtasn1-3-dev > /dev/null 2>&1
+    apt-get install -y --force-yes libtasn1-6-dev > /dev/null 2>&1
+    apt-get install -y --force-yes libterm-readkey-perl > /dev/null 2>&1
+    apt-get install -y --force-yes libtidy-0.99-0 > /dev/null 2>&1
+    apt-get install -y --force-yes libtidy-dev > /dev/null 2>&1
+    apt-get install -y --force-yes libtiff5 > /dev/null 2>&1
+    apt-get install -y --force-yes libtiff5-dev > /dev/null 2>&1
+    apt-get install -y --force-yes libtiffxx5 > /dev/null 2>&1
+    apt-get install -y --force-yes libtimedate-perl > /dev/null 2>&1
+    apt-get install -y --force-yes libtinfo-dev > /dev/null 2>&1
+    apt-get install -y --force-yes libtool > /dev/null 2>&1
+    apt-get install -y --force-yes libtsan0 > /dev/null 2>&1
+    apt-get install -y --force-yes libunistring0 > /dev/null 2>&1
+    apt-get install -y --force-yes libvpx-dev > /dev/null 2>&1
+    apt-get install -y --force-yes libvpx1 > /dev/null 2>&1
+    apt-get install -y --force-yes libwrap0-dev > /dev/null 2>&1
+    apt-get install -y --force-yes libx11-6 > /dev/null 2>&1
+    apt-get install -y --force-yes libx11-data > /dev/null 2>&1
+    apt-get install -y --force-yes libx11-dev > /dev/null 2>&1
+    apt-get install -y --force-yes libxau-dev > /dev/null 2>&1
+    apt-get install -y --force-yes libxau6 > /dev/null 2>&1
+    apt-get install -y --force-yes libxcb1 > /dev/null 2>&1
+    apt-get install -y --force-yes libxcb1-dev > /dev/null 2>&1
+    apt-get install -y --force-yes libxdmcp-dev > /dev/null 2>&1
+    apt-get install -y --force-yes libxdmcp6 > /dev/null 2>&1
+    apt-get install -y --force-yes libxml2 > /dev/null 2>&1
+    apt-get install -y --force-yes libxml2-dev > /dev/null 2>&1
+    apt-get install -y --force-yes libxmltok1 > /dev/null 2>&1
+    apt-get install -y --force-yes libxmltok1-dev > /dev/null 2>&1
+    apt-get install -y --force-yes libxpm-dev > /dev/null 2>&1
+    apt-get install -y --force-yes libxpm4 > /dev/null 2>&1
+    apt-get install -y --force-yes libxslt1-dev > /dev/null 2>&1
+    apt-get install -y --force-yes libxslt1.1 > /dev/null 2>&1
+    apt-get install -y --force-yes libxt-dev > /dev/null 2>&1
+    apt-get install -y --force-yes libxt6 > /dev/null 2>&1
+    apt-get install -y --force-yes linux-libc-dev > /dev/null 2>&1
+    apt-get install -y --force-yes m4 > /dev/null 2>&1
+    apt-get install -y --force-yes make > /dev/null 2>&1
+    apt-get install -y --force-yes man-db > /dev/null 2>&1
+    apt-get install -y --force-yes netcat-openbsd > /dev/null 2>&1
+    apt-get install -y --force-yes odbcinst1debian2 > /dev/null 2>&1
+    apt-get install -y --force-yes openssl > /dev/null 2>&1
+    apt-get install -y --force-yes patch > /dev/null 2>&1
+    apt-get install -y --force-yes pkg-config > /dev/null 2>&1
+    apt-get install -y --force-yes po-debconf > /dev/null 2>&1
+    apt-get install -y --force-yes python > /dev/null 2>&1
+    apt-get install -y --force-yes python-minimal > /dev/null 2>&1
+    apt-get install -y --force-yes python2.7 > /dev/null 2>&1
+    apt-get install -y --force-yes python2.7-minimal > /dev/null 2>&1
+    apt-get install -y --force-yes re2c > /dev/null 2>&1
+    apt-get install -y --force-yes unixodbc > /dev/null 2>&1
+    apt-get install -y --force-yes unixodbc-dev > /dev/null 2>&1
+    apt-get install -y --force-yes uuid-dev > /dev/null 2>&1
+    apt-get install -y --force-yes x11-common > /dev/null 2>&1
+    apt-get install -y --force-yes x11proto-core-dev > /dev/null 2>&1
+    apt-get install -y --force-yes x11proto-input-dev > /dev/null 2>&1
+    apt-get install -y --force-yes x11proto-kb-dev > /dev/null 2>&1
+    apt-get install -y --force-yes xorg-sgml-doctools > /dev/null 2>&1
+    apt-get install -y --force-yes libjpeg8 > /dev/null 2>&1
+    apt-get install -y --force-yes xtrans-dev > /dev/null 2>&1
+    apt-get install -y --force-yes zlib1g-dev > /dev/null 2>&1
+    apt-get install -y --force-yes php5-fpm  > /dev/null 2>&1
+}
 
-:
-EOF
-########################## END INIT SETUP ##################################
+fos_install(){
+    /usr/sbin/useradd -s /sbin/nologin -U -d /home/fos-streaming -m fosstreaming > /dev/null
+    cd /home/fos-streaming > /dev/null
+    wget http://fos-streaming.com/fos-streaming_unpack_i686.tar.gz -O /home/fos-streaming/fos-streaming_unpack_i686.tar.gz  > /dev/null 2>&1
+    tar -xzf /home/fos-streaming/fos-streaming_unpack_i686.tar.gz -C /home/fos-streaming/
+    rm -rf /home/fos-streaming/fos/www/vendor /home/fos-streaming/fos/www/50x.html > /dev/null 2>&1
+    cd /home/fos-streaming/fos/www  > /dev/null 2>&1
+    git clone https://github.com/zgelici/FOS-Streaming-v1.git  > /dev/null 2>&1
+    cp -R /home/fos-streaming/fos/www/FOS-Streaming-v1/* /home/fos-streaming/fos/www/  > /dev/null 2>&1
 
-## setup daemon ##
-chmod 755 /etc/init.d/deluge-daemon
-update-rc.d deluge-daemon defaults
-## start deluge ##
-invoke-rc.d deluge-daemon start
+    echo 'www-data ALL = (root) NOPASSWD: /usr/local/bin/ffmpeg' >> /etc/sudoers  > /dev/null 2>&1
+    echo 'www-data ALL = (root) NOPASSWD: /usr/local/bin/ffprobe' >> /etc/sudoers  > /dev/null 2>&1
+    echo '*/2 * * * * www-data /home/fos-streaming/fos/php/bin/php /home/fos-streaming/fos/www/cron.php' >> /etc/crontab  > /dev/null 2>&1
 
-## Finish ## 
-clear
-echo "#####################################################"
-echo "##########        We reached our END!         ##########"
-echo "#####################################################"
-echo "If all went as planned you should be able to access"
-echo "the deluge web-ui at http://$ip:8112/ "
-echo "         Default password = deluge"
-echo "#####################################################"
-echo "##########   Installer by LiVeSaT          ##########"
-echo "#####################################################"
-echo "For FAQ and configuration options please see:"
-echo          "www.livesatshare.com/es/sat/"
+    sed --in-place '/exit 0/d' /etc/rc.local > /dev/null 2>&1
+    echo 'sleep 10' >> /etc/rc.local > /dev/null 2>&1
+    echo '/home/fos-streaming/fos/nginx/sbin/nginx_fos' >> /etc/rc.local > /dev/null 2>&1
+    echo '/home/fos-streaming/fos/php/sbin/php-fpm' >> /etc/rc.local > /dev/null 2>&1
+    echo 'exit 0' >> /etc/rc.local > /dev/null 2>&1
+
+    /bin/mkdir /home/fos-streaming/fos/www/hl  > /dev/null 2>&1
+    chmod -R 777 /home/fos-streaming/fos/www/hl  > /dev/null 2>&1
+    /bin/mkdir /home/fos-streaming/fos/www/cache  > /dev/null 2>&1
+    chmod -R 777 /home/fos-streaming/fos/www/cache  > /dev/null 2>&1
+    chown www-data:www-data /home/fos-streaming/fos/nginx/conf  > /dev/null 2>&1
+
+    /bin/cp improvement/nginx.conf /home/fos-streaming/fos/nginx/conf/nginx.conf
+    /bin/cp improvement/php-fpm.conf /home/fos-streaming/fos/php/etc/php-fpm.conf
+    /bin/cp improvement/www.conf /home/fos-streaming/fos/php/etc/pool.d/www.conf
+    /bin/cp improvement/balance.conf /home/fos-streaming/fos/nginx/conf/balance.conf
+
+}
+
+startfos(){
+    /home/fos-streaming/fos/php/sbin/php-fpm
+    /home/fos-streaming/fos/nginx/sbin/nginx_fos
+    sleep 3
+    curl "http://127.0.0.1:8000/install_database_tables.php?install"
+    curl "http://127.0.0.1:8000/install_database_tables.php?update"
+    rm -r /home/fos-streaming/fos/www/install_database_tables.php
+}
+
+ffmpeg()
+{
+    wget http://johnvansickle.com/ffmpeg/releases/ffmpeg-release-32bit-static.tar.xz -O /home/fos-streaming/ffmpeg-release-32bit-static.tar.xz  > /dev/null 2>&1
+    tar -xJf /home/fos-streaming/ffmpeg-release-32bit-static.tar.xz -C /tmp/ > /dev/null 2>&1
+    /bin/cp /tmp/ffmpeg*/ffmpeg  /usr/local/bin/ffmpeg
+    /bin/cp /tmp/ffmpeg*/ffprobe /usr/local/bin/ffprobe
+    chmod 755 /usr/local/bin/ffmpeg  > /dev/null 2>&1
+    chmod 755 /usr/local/bin/ffprobe  > /dev/null 2>&1
+    chown www-data:root /usr/local/nginx/html  > /dev/null 2>&1
+}
+
+info(){
+ echo "********************************************************************************************;
+    echo "FOS-Streaming installed.. \n";
+    echo "visit management page: 'http://host:8000' \n";
+    echo "Login: \n";
+    echo "Username: admin \n";
+    echo "Password: admin \n";
+    echo "database details: \n";
+    echo  "hostname: localhost, database_name: " $1 " , database_username: "  $2  " , database_password " $3
+    echo "IMPORTANT: After you logged in, go to settings and check your ip-address. \n";
+    echo "*****************************************************************************************;
+}
+
+database(){
+
+echo ""
+read -p "Choose your MySQL database name: " sqldatabase
+read -p "Enter your MySQL username(usual 'root'): " sqluname
+read -rep $'Enter your MySQL password (ENTER for none):' sqlpasswd
+echo "mysql-server mysql-server/root_password password $sqlpasswd" | debconf-set-selections
+echo "mysql-server mysql-server/root_password_again password $sqlpasswd" | debconf-set-selections
+echo "phpmyadmin phpmyadmin/dbconfig-install boolean true" | debconf-set-selections
+echo "phpmyadmin phpmyadmin/app-password-confirm password $sqlpasswd" | debconf-set-selections
+echo "phpmyadmin phpmyadmin/mysql/admin-pass password $sqlpasswd" | debconf-set-selections
+echo "phpmyadmin phpmyadmin/mysql/app-pass password $sqlpasswd" | debconf-set-selections
+echo "phpmyadmin phpmyadmin/reconfigure-webserver multiselect none" | debconf-set-selections
+
+apt-get install -y mysql-server > /dev/null 2>&1
+apt-get install -y php5-mysql  > /dev/null 2>&1
+
+mysql -uroot -p$sqlpasswd -e "CREATE DATABASE $sqldatabase"
+mysql -uroot -p$sqlpasswd -e "grant all privileges on $sqldatabase.* to '$sqluname'@'localhost' identified by '$sqlpasswd'"
+
+
+sed -i 's/xxx/'$sqldatabase'/g' /home/fos-streaming/fos/www/config.php
+sed -i 's/zzz/'$sqlpasswd'/g' /home/fos-streaming/fos/www/config.php
+sed -i 's/ttt/'$sqluname'/g' /home/fos-streaming/fos/www/config.php
+
+}
+
+echo "FOS-Streaming is installing, you need to wait till the installation gets finished"
+
+fosstreamingexist
+distro
+packages_install
+fos_install
+database
+ffmpeg
+startfos
+#test
+info
