@@ -1,0 +1,5 @@
+#EXTM3U Albdroid TV
+#EXTINF:-1,TV FUJI
+http://35.193.201.50:8888/live/demo/demo/1.ts
+#EXTINF:-1,TV FUJI 2
+http://35.193.201.50:8888/live/demo/demo/2.ts
