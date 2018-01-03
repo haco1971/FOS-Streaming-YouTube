@@ -37,7 +37,7 @@ fosstreamingexist() {
 
 # FUNCTION: Packages Install
 packages_install(){
-    apt-get update >/dev/null 2>&1
+    apt-get update 
     apt-get install -y --force-yes git 
     apt-get install -y --force-yes install php5-cli curl 
     apt-get install -y --force-yes libxml2-dev  
@@ -155,7 +155,7 @@ packages_install(){
 
 fos_install(){
     /usr/sbin/useradd -s /sbin/nologin -U -d /home/fos-streaming -m fosstreaming 
-    cd /home/fos-streaming > /dev/null
+    cd /home/fos-streaming 
     wget http://fos-streaming.com/fos-streaming_unpack_x84_64.tar.gz -O /home/fos-streaming/fos-streaming_unpack_x84_64.tar.gz  
     tar -xzf /home/fos-streaming/fos-streaming_unpack_x84_64.tar.gz -C /home/fos-streaming/
     rm -rf /home/fos-streaming/fos/www/vendor /home/fos-streaming/fos/www/50x.html 
@@ -190,8 +190,8 @@ startfos(){
     /home/fos-streaming/fos/php/sbin/php-fpm
     /home/fos-streaming/fos/nginx/sbin/nginx_fos
     sleep 3
-    curl "http://127.0.0.1:8000/install_database_tables.php?install"
-    curl "http://127.0.0.1:8000/install_database_tables.php?update"
+    curl "http://192.168.1.5:8000/install_database_tables.php?install"
+    curl "http://192.168.1.5:8000/install_database_tables.php?update"
     rm -r /home/fos-streaming/fos/www/install_database_tables.php
 }
 
@@ -209,7 +209,7 @@ ffmpeg()
 info(){
  echo "********************************************************************************************;
     echo "FOS-Streaming installed.. \n";
-    echo "visit management page: 'http://host:8000' \n";
+    echo "visit management page: 'http://192.168.1.5:8000' \n";
     echo "Login: \n";
     echo "Username: admin \n";
     echo "Password: admin \n";
