@@ -38,146 +38,146 @@ fosstreamingexist() {
 # FUNCTION: Packages Install
 packages_install(){
     apt-get update >/dev/null 2>&1
-    apt-get install -y --force-yes git >/dev/null 2>&1
-    apt-get install -y --force-yes install php5-cli curl >/dev/null 2>&1
-    apt-get install -y --force-yes libxml2-dev  > /dev/null 2>&1
-    apt-get install -y --force-yes libbz2-dev  > /dev/null 2>&1
-    apt-get install -y --force-yes curl   > /dev/null 2>&1
-    apt-get install -y --force-yes libcurl4-openssl-dev   > /dev/null 2>&1
-    apt-get install -y --force-yes libmcrypt-dev  > /dev/null 2>&1
-    apt-get install -y --force-yes libmhash2 > /dev/null 2>&1
-    apt-get install -y --force-yes libmhash-dev  > /dev/null 2>&1
-    apt-get install -y --force-yes libpcre3  > /dev/null 2>&1
-    apt-get install -y --force-yes libpcre3-dev  > /dev/null 2>&1
-    apt-get install -y --force-yes make  > /dev/null 2>&1
-    apt-get install -y --force-yes build-essential  > /dev/null 2>&1
-    apt-get install -y --force-yes libxslt1-dev git > /dev/null 2>&1
-    apt-get install -y --force-yes libssl-dev > /dev/null 2>&1
-    apt-get install -y --force-yes git > /dev/null 2>&1
-    apt-get install -y --force-yes php5  > /dev/null 2>&1
-    apt-get install -y --force-yes unzip > /dev/null 2>&1
-    apt-get install -y --force-yes python-software-properties > /dev/null 2>&1
-    apt-get install -y --force-yes libpopt0 > /dev/null 2>&1
-    apt-get install -y --force-yes libpq-dev > /dev/null 2>&1
-    apt-get install -y --force-yes libpq5 > /dev/null 2>&1
-    apt-get install -y --force-yes libpspell-dev > /dev/null 2>&1
-    apt-get install -y --force-yes libpthread-stubs0-dev > /dev/null 2>&1
-    apt-get install -y --force-yes libpython-stdlib > /dev/null 2>&1
-    apt-get install -y --force-yes libqdbm-dev > /dev/null 2>&1
-    apt-get install -y --force-yes libqdbm14 > /dev/null 2>&1
-    apt-get install -y --force-yes libquadmath0 > /dev/null 2>&1
-    apt-get install -y --force-yes librecode-dev > /dev/null 2>&1
-    apt-get install -y --force-yes librecode0 > /dev/null 2>&1
-    apt-get install -y --force-yes librtmp-dev > /dev/null 2>&1
-    apt-get install -y --force-yes librtmp0 > /dev/null 2>&1
-    apt-get install -y --force-yes libsasl2-dev > /dev/null 2>&1
-    apt-get install -y --force-yes libsasl2-modules > /dev/null 2>&1
-    apt-get install -y --force-yes libsctp-dev > /dev/null 2>&1
-    apt-get install -y --force-yes libsctp1 > /dev/null 2>&1
-    apt-get install -y --force-yes libsensors4 > /dev/null 2>&1
-    apt-get install -y --force-yes libsensors4-dev > /dev/null 2>&1
-    apt-get install -y --force-yes libsm-dev > /dev/null 2>&1
-    apt-get install -y --force-yes libsm6 > /dev/null 2>&1
-    apt-get install -y --force-yes libsnmp-base > /dev/null 2>&1
-    apt-get install -y --force-yes libsnmp-dev > /dev/null 2>&1
-    apt-get install -y --force-yes libsnmp-perl > /dev/null 2>&1
-    apt-get install -y --force-yes libsnmp30 > /dev/null 2>&1
-    apt-get install -y --force-yes libsqlite3-dev > /dev/null 2>&1
-    apt-get install -y --force-yes libssh2-1 > /dev/null 2>&1
-    apt-get install -y --force-yes libssh2-1-dev > /dev/null 2>&1
-    apt-get install -y --force-yes libssl-dev > /dev/null 2>&1
-    apt-get install -y --force-yes libstdc++-4.8-dev > /dev/null 2>&1
-    apt-get install -y --force-yes libstdc++6-4.7-dev > /dev/null 2>&1
-    apt-get install -y --force-yes libsybdb5 > /dev/null 2>&1
-    apt-get install -y --force-yes libtasn1-3-dev > /dev/null 2>&1
-    apt-get install -y --force-yes libtasn1-6-dev > /dev/null 2>&1
-    apt-get install -y --force-yes libterm-readkey-perl > /dev/null 2>&1
-    apt-get install -y --force-yes libtidy-0.99-0 > /dev/null 2>&1
-    apt-get install -y --force-yes libtidy-dev > /dev/null 2>&1
-    apt-get install -y --force-yes libtiff5 > /dev/null 2>&1
-    apt-get install -y --force-yes libtiff5-dev > /dev/null 2>&1
-    apt-get install -y --force-yes libtiffxx5 > /dev/null 2>&1
-    apt-get install -y --force-yes libtimedate-perl > /dev/null 2>&1
-    apt-get install -y --force-yes libtinfo-dev > /dev/null 2>&1
-    apt-get install -y --force-yes libtool > /dev/null 2>&1
-    apt-get install -y --force-yes libtsan0 > /dev/null 2>&1
-    apt-get install -y --force-yes libunistring0 > /dev/null 2>&1
-    apt-get install -y --force-yes libvpx-dev > /dev/null 2>&1
-    apt-get install -y --force-yes libvpx1 > /dev/null 2>&1
-    apt-get install -y --force-yes libwrap0-dev > /dev/null 2>&1
-    apt-get install -y --force-yes libx11-6 > /dev/null 2>&1
-    apt-get install -y --force-yes libx11-data > /dev/null 2>&1
-    apt-get install -y --force-yes libx11-dev > /dev/null 2>&1
-    apt-get install -y --force-yes libxau-dev > /dev/null 2>&1
-    apt-get install -y --force-yes libxau6 > /dev/null 2>&1
-    apt-get install -y --force-yes libxcb1 > /dev/null 2>&1
-    apt-get install -y --force-yes libxcb1-dev > /dev/null 2>&1
-    apt-get install -y --force-yes libxdmcp-dev > /dev/null 2>&1
-    apt-get install -y --force-yes libxdmcp6 > /dev/null 2>&1
-    apt-get install -y --force-yes libxml2 > /dev/null 2>&1
-    apt-get install -y --force-yes libxml2-dev > /dev/null 2>&1
-    apt-get install -y --force-yes libxmltok1 > /dev/null 2>&1
-    apt-get install -y --force-yes libxmltok1-dev > /dev/null 2>&1
-    apt-get install -y --force-yes libxpm-dev > /dev/null 2>&1
-    apt-get install -y --force-yes libxpm4 > /dev/null 2>&1
-    apt-get install -y --force-yes libxslt1-dev > /dev/null 2>&1
-    apt-get install -y --force-yes libxslt1.1 > /dev/null 2>&1
-    apt-get install -y --force-yes libxt-dev > /dev/null 2>&1
-    apt-get install -y --force-yes libxt6 > /dev/null 2>&1
-    apt-get install -y --force-yes linux-libc-dev > /dev/null 2>&1
-    apt-get install -y --force-yes m4 > /dev/null 2>&1
-    apt-get install -y --force-yes make > /dev/null 2>&1
-    apt-get install -y --force-yes man-db > /dev/null 2>&1
-    apt-get install -y --force-yes netcat-openbsd > /dev/null 2>&1
-    apt-get install -y --force-yes odbcinst1debian2 > /dev/null 2>&1
-    apt-get install -y --force-yes openssl > /dev/null 2>&1
-    apt-get install -y --force-yes patch > /dev/null 2>&1
-    apt-get install -y --force-yes pkg-config > /dev/null 2>&1
-    apt-get install -y --force-yes po-debconf > /dev/null 2>&1
-    apt-get install -y --force-yes python > /dev/null 2>&1
-    apt-get install -y --force-yes python-minimal > /dev/null 2>&1
-    apt-get install -y --force-yes python2.7 > /dev/null 2>&1
-    apt-get install -y --force-yes python2.7-minimal > /dev/null 2>&1
-    apt-get install -y --force-yes re2c > /dev/null 2>&1
-    apt-get install -y --force-yes unixodbc > /dev/null 2>&1
-    apt-get install -y --force-yes unixodbc-dev > /dev/null 2>&1
-    apt-get install -y --force-yes uuid-dev > /dev/null 2>&1
-    apt-get install -y --force-yes x11-common > /dev/null 2>&1
-    apt-get install -y --force-yes x11proto-core-dev > /dev/null 2>&1
-    apt-get install -y --force-yes x11proto-input-dev > /dev/null 2>&1
-    apt-get install -y --force-yes x11proto-kb-dev > /dev/null 2>&1
-    apt-get install -y --force-yes xorg-sgml-doctools > /dev/null 2>&1
-    apt-get install -y --force-yes libjpeg8 > /dev/null 2>&1
-    apt-get install -y --force-yes xtrans-dev > /dev/null 2>&1
-    apt-get install -y --force-yes zlib1g-dev > /dev/null 2>&1
-    apt-get install -y --force-yes php5-fpm  > /dev/null 2>&1
+    apt-get install -y --force-yes git 
+    apt-get install -y --force-yes install php5-cli curl 
+    apt-get install -y --force-yes libxml2-dev  
+    apt-get install -y --force-yes libbz2-dev  
+    apt-get install -y --force-yes curl
+    apt-get install -y --force-yes libcurl4-openssl-dev
+    apt-get install -y --force-yes libmcrypt-dev
+    apt-get install -y --force-yes libmhash2
+    apt-get install -y --force-yes libmhash-dev
+    apt-get install -y --force-yes libpcre3
+    apt-get install -y --force-yes libpcre3-dev
+    apt-get install -y --force-yes make  
+    apt-get install -y --force-yes build-essential  
+    apt-get install -y --force-yes libxslt1-dev git 
+    apt-get install -y --force-yes libssl-dev 
+    apt-get install -y --force-yes git 
+    apt-get install -y --force-yes php5 
+    apt-get install -y --force-yes unzip
+    apt-get install -y --force-yes python-software-properties 
+    apt-get install -y --force-yes libpopt0
+    apt-get install -y --force-yes libpq-dev
+    apt-get install -y --force-yes libpq5
+    apt-get install -y --force-yes libpspell-dev
+    apt-get install -y --force-yes libpthread-stubs0-dev
+    apt-get install -y --force-yes libpython-stdlib 
+    apt-get install -y --force-yes libqdbm-dev
+    apt-get install -y --force-yes libqdbm14
+    apt-get install -y --force-yes libquadmath0 
+    apt-get install -y --force-yes librecode-dev 
+    apt-get install -y --force-yes librecode0 
+    apt-get install -y --force-yes librtmp-dev 
+    apt-get install -y --force-yes librtmp0
+    apt-get install -y --force-yes libsasl2-dev 
+    apt-get install -y --force-yes libsasl2-modules 
+    apt-get install -y --force-yes libsctp-dev 
+    apt-get install -y --force-yes libsctp1 
+    apt-get install -y --force-yes libsensors4 
+    apt-get install -y --force-yes libsensors4-dev 
+    apt-get install -y --force-yes libsm-dev 
+    apt-get install -y --force-yes libsm6 
+    apt-get install -y --force-yes libsnmp-base 
+    apt-get install -y --force-yes libsnmp-dev 
+    apt-get install -y --force-yes libsnmp-perl 
+    apt-get install -y --force-yes libsnmp30 
+    apt-get install -y --force-yes libsqlite3-dev 
+    apt-get install -y --force-yes libssh2-1 
+    apt-get install -y --force-yes libssh2-1-dev 
+    apt-get install -y --force-yes libssl-dev 
+    apt-get install -y --force-yes libstdc++-4.8-dev 
+    apt-get install -y --force-yes libstdc++6-4.7-dev 
+    apt-get install -y --force-yes libsybdb5 
+    apt-get install -y --force-yes libtasn1-3-dev 
+    apt-get install -y --force-yes libtasn1-6-dev 
+    apt-get install -y --force-yes libterm-readkey-perl 
+    apt-get install -y --force-yes libtidy-0.99-0 
+    apt-get install -y --force-yes libtidy-dev 
+    apt-get install -y --force-yes libtiff5 
+    apt-get install -y --force-yes libtiff5-dev 
+    apt-get install -y --force-yes libtiffxx5 
+    apt-get install -y --force-yes libtimedate-perl 
+    apt-get install -y --force-yes libtinfo-dev 
+    apt-get install -y --force-yes libtool 
+    apt-get install -y --force-yes libtsan0 
+    apt-get install -y --force-yes libunistring0 
+    apt-get install -y --force-yes libvpx-dev 
+    apt-get install -y --force-yes libvpx1 
+    apt-get install -y --force-yes libwrap0-dev 
+    apt-get install -y --force-yes libx11-6 
+    apt-get install -y --force-yes libx11-data 
+    apt-get install -y --force-yes libx11-dev 
+    apt-get install -y --force-yes libxau-dev 
+    apt-get install -y --force-yes libxau6 
+    apt-get install -y --force-yes libxcb1 
+    apt-get install -y --force-yes libxcb1-dev 
+    apt-get install -y --force-yes libxdmcp-dev 
+    apt-get install -y --force-yes libxdmcp6 
+    apt-get install -y --force-yes libxml2 
+    apt-get install -y --force-yes libxml2-dev 
+    apt-get install -y --force-yes libxmltok1 
+    apt-get install -y --force-yes libxmltok1-dev 
+    apt-get install -y --force-yes libxpm-dev 
+    apt-get install -y --force-yes libxpm4 
+    apt-get install -y --force-yes libxslt1-dev 
+    apt-get install -y --force-yes libxslt1.1 
+    apt-get install -y --force-yes libxt-dev 
+    apt-get install -y --force-yes libxt6 
+    apt-get install -y --force-yes linux-libc-dev 
+    apt-get install -y --force-yes m4 
+    apt-get install -y --force-yes make 
+    apt-get install -y --force-yes man-db 
+    apt-get install -y --force-yes netcat-openbsd 
+    apt-get install -y --force-yes odbcinst1debian2 
+    apt-get install -y --force-yes openssl 
+    apt-get install -y --force-yes patch 
+    apt-get install -y --force-yes pkg-config 
+    apt-get install -y --force-yes po-debconf 
+    apt-get install -y --force-yes python 
+    apt-get install -y --force-yes python-minimal 
+    apt-get install -y --force-yes python2.7 
+    apt-get install -y --force-yes python2.7-minimal 
+    apt-get install -y --force-yes re2c 
+    apt-get install -y --force-yes unixodbc 
+    apt-get install -y --force-yes unixodbc-dev 
+    apt-get install -y --force-yes uuid-dev 
+    apt-get install -y --force-yes x11-common 
+    apt-get install -y --force-yes x11proto-core-dev 
+    apt-get install -y --force-yes x11proto-input-dev 
+    apt-get install -y --force-yes x11proto-kb-dev 
+    apt-get install -y --force-yes xorg-sgml-doctools 
+    apt-get install -y --force-yes libjpeg8 
+    apt-get install -y --force-yes xtrans-dev 
+    apt-get install -y --force-yes zlib1g-dev 
+    apt-get install -y --force-yes php5-fpm 
 }
 
 fos_install(){
-    /usr/sbin/useradd -s /sbin/nologin -U -d /home/fos-streaming -m fosstreaming > /dev/null
+    /usr/sbin/useradd -s /sbin/nologin -U -d /home/fos-streaming -m fosstreaming 
     cd /home/fos-streaming > /dev/null
-    wget http://fos-streaming.com/fos-streaming_unpack_x84_64.tar.gz -O /home/fos-streaming/fos-streaming_unpack_x84_64.tar.gz  > /dev/null 2>&1
+    wget http://fos-streaming.com/fos-streaming_unpack_x84_64.tar.gz -O /home/fos-streaming/fos-streaming_unpack_x84_64.tar.gz  
     tar -xzf /home/fos-streaming/fos-streaming_unpack_x84_64.tar.gz -C /home/fos-streaming/
-    rm -rf /home/fos-streaming/fos/www/vendor /home/fos-streaming/fos/www/50x.html > /dev/null 2>&1
-    cd /home/fos-streaming/fos/www  > /dev/null 2>&1
-    git clone https://github.com/zgelici/FOS-Streaming-v1.git  > /dev/null 2>&1
-    cp -R /home/fos-streaming/fos/www/FOS-Streaming-v1/* /home/fos-streaming/fos/www/  > /dev/null 2>&1
+    rm -rf /home/fos-streaming/fos/www/vendor /home/fos-streaming/fos/www/50x.html 
+    cd /home/fos-streaming/fos/www  
+    git clone https://github.com/zgelici/FOS-Streaming-v1.git  
+    cp -R /home/fos-streaming/fos/www/FOS-Streaming-v1/* /home/fos-streaming/fos/www/  
 
-    echo 'www-data ALL = (root) NOPASSWD: /usr/local/bin/ffmpeg' >> /etc/sudoers  > /dev/null 2>&1
-    echo 'www-data ALL = (root) NOPASSWD: /usr/local/bin/ffprobe' >> /etc/sudoers  > /dev/null 2>&1
-    echo '*/2 * * * * www-data /home/fos-streaming/fos/php/bin/php /home/fos-streaming/fos/www/cron.php' >> /etc/crontab  > /dev/null 2>&1
+    echo 'www-data ALL = (root) NOPASSWD: /usr/local/bin/ffmpeg' >> /etc/sudoers  
+    echo 'www-data ALL = (root) NOPASSWD: /usr/local/bin/ffprobe' >> /etc/sudoers  
+    echo '*/2 * * * * www-data /home/fos-streaming/fos/php/bin/php /home/fos-streaming/fos/www/cron.php' >> /etc/crontab  
 
-    sed --in-place '/exit 0/d' /etc/rc.local > /dev/null 2>&1
-    echo 'sleep 10' >> /etc/rc.local > /dev/null 2>&1
-    echo '/home/fos-streaming/fos/nginx/sbin/nginx_fos' >> /etc/rc.local > /dev/null 2>&1
-    echo '/home/fos-streaming/fos/php/sbin/php-fpm' >> /etc/rc.local > /dev/null 2>&1
-    echo 'exit 0' >> /etc/rc.local > /dev/null 2>&1
+    sed --in-place '/exit 0/d' /etc/rc.local 
+    echo 'sleep 10' >> /etc/rc.local 
+    echo '/home/fos-streaming/fos/nginx/sbin/nginx_fos' >> /etc/rc.local 
+    echo '/home/fos-streaming/fos/php/sbin/php-fpm' >> /etc/rc.local 
+    echo 'exit 0' >> /etc/rc.local 
 
-    /bin/mkdir /home/fos-streaming/fos/www/hl  > /dev/null 2>&1
-    chmod -R 777 /home/fos-streaming/fos/www/hl  > /dev/null 2>&1
-    /bin/mkdir /home/fos-streaming/fos/www/cache  > /dev/null 2>&1
-    chmod -R 777 /home/fos-streaming/fos/www/cache  > /dev/null 2>&1
-    chown www-data:www-data /home/fos-streaming/fos/nginx/conf  > /dev/null 2>&1
+    /bin/mkdir /home/fos-streaming/fos/www/hl  
+    chmod -R 777 /home/fos-streaming/fos/www/hl  
+    /bin/mkdir /home/fos-streaming/fos/www/cache  
+    chmod -R 777 /home/fos-streaming/fos/www/cache  
+    chown www-data:www-data /home/fos-streaming/fos/nginx/conf  
 
     /bin/cp improvement/nginx.conf /home/fos-streaming/fos/nginx/conf/nginx.conf
     /bin/cp improvement/php-fpm.conf /home/fos-streaming/fos/php/etc/php-fpm.conf
@@ -197,13 +197,13 @@ startfos(){
 
 ffmpeg()
 {
-    wget http://johnvansickle.com/ffmpeg/releases/ffmpeg-release-64bit-static.tar.xz -O /home/fos-streaming/ffmpeg-release-64bit-static.tar.xz  > /dev/null 2>&1
-    tar -xJf /home/fos-streaming/ffmpeg-release-64bit-static.tar.xz -C /tmp/ > /dev/null 2>&1
+    wget http://johnvansickle.com/ffmpeg/releases/ffmpeg-release-64bit-static.tar.xz -O /home/fos-streaming/ffmpeg-release-64bit-static.tar.xz  
+    tar -xJf /home/fos-streaming/ffmpeg-release-64bit-static.tar.xz -C /tmp/ 
     /bin/cp /tmp/ffmpeg*/ffmpeg  /usr/local/bin/ffmpeg
     /bin/cp /tmp/ffmpeg*/ffprobe /usr/local/bin/ffprobe
-    chmod 755 /usr/local/bin/ffmpeg  > /dev/null 2>&1
-    chmod 755 /usr/local/bin/ffprobe  > /dev/null 2>&1
-    chown www-data:root /usr/local/nginx/html  > /dev/null 2>&1
+    chmod 755 /usr/local/bin/ffmpeg  
+    chmod 755 /usr/local/bin/ffprobe  
+    chown www-data:root /usr/local/nginx/html  
 }
 
 info(){
@@ -233,8 +233,8 @@ echo "phpmyadmin phpmyadmin/mysql/admin-pass password $sqlpasswd" | debconf-set-
 echo "phpmyadmin phpmyadmin/mysql/app-pass password $sqlpasswd" | debconf-set-selections
 echo "phpmyadmin phpmyadmin/reconfigure-webserver multiselect none" | debconf-set-selections
 
-apt-get install -y mysql-server > /dev/null 2>&1
-apt-get install -y php5-mysql  > /dev/null 2>&1
+apt-get install -y mysql-server 
+apt-get install -y php5-mysql  
 
 mysql -uroot -p$sqlpasswd -e "CREATE DATABASE $sqldatabase"
 mysql -uroot -p$sqlpasswd -e "grant all privileges on $sqldatabase.* to '$sqluname'@'localhost' identified by '$sqlpasswd'"
@@ -257,4 +257,3 @@ ffmpeg
 startfos
 #test
 info
-
